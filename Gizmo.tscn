@@ -1,0 +1,49 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Assets/jewel.glb" type="PackedScene" id=1]
+[ext_resource path="res://Assets/MetalPlates008_2K_NormalGL.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/MetalPlates008_2K_Metalness.jpg" type="Texture" id=3]
+[ext_resource path="res://Assets/MetalPlates008_2K_Roughness.jpg" type="Texture" id=4]
+[ext_resource path="res://Assets/MetalPlates008_2K_Color.jpg" type="Texture" id=5]
+[ext_resource path="res://Assets/MetalPlates008_2K_Displacement.jpg" type="Texture" id=6]
+[ext_resource path="res://Gizmo.gd" type="Script" id=7]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_texture = ExtResource( 5 )
+metallic = 0.8
+metallic_texture = ExtResource( 3 )
+roughness = 0.2
+roughness_texture = ExtResource( 4 )
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 2 )
+depth_enabled = true
+depth_scale = 0.05
+depth_deep_parallax = false
+depth_flip_tangent = false
+depth_flip_binormal = false
+depth_texture = ExtResource( 6 )
+uv1_scale = Vector3( 0.1, 0.1, 0.1 )
+
+[sub_resource type="SphereShape" id=2]
+radius = 0.5
+
+[node name="Gizmo" instance=ExtResource( 1 )]
+script = ExtResource( 7 )
+
+[node name="jewel" parent="." index="0"]
+material/0 = SubResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="." index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+light_color = Color( 0, 1, 0.505882, 1 )
+light_energy = 16.0
+omni_attenuation = 2.0
+
+[node name="Area" type="Area" parent="." index="2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0 )
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
